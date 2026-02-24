@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mama Safi - Ammattimaiset Kotipalvelut</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Language toggle styles */
+        .lang-fi { display: block; }
+        .lang-en { display: none; }
+        
+        .language-fi .lang-fi { display: block !important; }
+        .language-fi .lang-en { display: none !important; }
+        
+        .language-en .lang-fi { display: none !important; }
+        .language-en .lang-en { display: block !important; }
+        
+        /* Smooth transitions */
+        .translatable {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 language-fi">
+    <!-- Language Switcher -->
+    <div class="fixed top-4 right-4 z-50">
+        <div class="flex items-center space-x-2 bg-white rounded-full shadow-lg px-4 py-2">
+            <button onclick="setLanguage('fi')" 
+                    class="language-option fi px-3 py-1 rounded-full text-sm font-medium transition"
+                    id="langFi">
+                🇫🇮 FI
+            </button>
+            <button onclick="setLanguage('en')" 
+                    class="language-option en px-3 py-1 rounded-full text-sm font-medium transition"
+                    id="langEn">
+                🇬🇧 EN
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-1 md:py-2">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img src="https://imgur.com/7oQYXtH.png" alt="Mama Safi Kotipalvelut" class="h-24 md:h-28">
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#palvelut" class="text-lg text-gray-700 hover:text-cyan-500 transition translatable">
+                        <span class="lang-fi">Palvelut</span>
+                        <span class="lang-en">Services</span>
+                    </a>
+                    <a href="#meista" class="text-lg text-gray-700 hover:text-cyan-500 transition translatable">
+                        <span class="lang-fi">Meistä</span>
+                        <span class="lang-en">About Us</span>
+                    </a>
+                    <a href="#yhteystiedot" class="text-lg text-gray-700 hover:text-cyan-500 transition translatable">
+                        <span class="lang-fi">Yhteystiedot</span>
+                        <span class="lang-en">Contact</span>
+                    </a>
+                </nav>
+
+                <!-- Contact Info -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="tel:+358449851874" class="flex items-center text-gray-700 hover:text-cyan-500">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        <span class="text-lg font-semibold">+358 44 985 1874</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2" id="menuButton">
+                    <svg class="w-6 h-6" id="menuIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg class="w-6 h-6 hidden" id="closeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden py-4 border-t">
+                <nav class="flex flex-col space-y-4">
+                    <a href="#palvelut" class="text-lg text-gray-700 translatable">
+                        <span class="lang-fi">Palvelut</span>
+                        <span class="lang-en">Services</span>
+                    </a>
+                    <a href="#meista" class="text-lg text-gray-700 translatable">
+                        <span class="lang-fi">Meistä</span>
+                        <span class="lang-en">About Us</span>
+                    </a>
+                    <a href="#yhteystiedot" class="text-lg text-gray-700 translatable">
+                        <span class="lang-fi">Yhteystiedot</span>
+                        <span class="lang-en">Contact</span>
+                    </a>
+                    <a href="tel:+358449851874" class="flex items-center text-cyan-500 font-semibold">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        +358 44 985 1874
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-400 to-blue-600 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 translatable">
+                <span class="lang-fi">Myötätuntoista Hoivaa Rakkaimmillesi</span>
+                <span class="lang-en">Compassionate Care for Your Loved Ones</span>
+            </h1>
+            <p class="text-2xl mb-8 max-w-3xl mx-auto translatable">
+                <span class="lang-fi">Ammattimaiset kotihoitopalvelut, jotka räätälöidään jokaiselle asiakkaalle. Siivouksesta terveydenhuoltoon – olemme täällä auttamassa.</span>
+                <span class="lang-en">Professional home care services tailored to each client. From cleaning to healthcare – we're here to help.</span>
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:palvelut.mamasafi@gmail.com" class="bg-white text-cyan-500 px-8 py-4 rounded-lg text-xl font-semibold hover:bg-gray-100 transition inline-block translatable">
+                    <span class="lang-fi">Varaa Palvelumme</span>
+                    <span class="lang-en">Book Our Services</span>
+                </a>
+                <a href="tel:+358449851874" class="bg-blue-900 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-800 transition inline-block translatable">
+                    <span class="lang-fi">Soita Meille</span>
+                    <span class="lang-en">Call Us</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <!-- Services Section -->
+    <section id="palvelut" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 translatable">
+                    <span class="lang-fi">Palvelumme</span>
+                    <span class="lang-en">Our Services</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8 translatable">
+                    <span class="lang-fi">Kattavat hoitoratkaisut, jotka räätälöidään jokaiselle asiakkaalle.</span>
+                    <span class="lang-en">Comprehensive care solutions tailored to each client.</span>
+                </p>
+            </div>
+
+            <!-- CLIENT TYPE SELECTOR -->
+            <div class="max-w-2xl mx-auto mb-12">
+                <div class="bg-white rounded-2xl shadow-xl p-6 border-4 border-cyan-500">
+                    <label class="block text-center mb-4 translatable">
+                        <span class="text-2xl font-bold text-gray-900 block mb-2 lang-fi">Valitse Asiakastyyppi:</span>
+                        <span class="text-2xl font-bold text-gray-900 block mb-2 lang-en">Select Client Type:</span>
+                        <span class="text-lg text-gray-600 lang-fi">Valitse nähdäksesi asianmukainen hinnoittelu</span>
+                        <span class="text-lg text-gray-600 lang-en">Select to see appropriate pricing</span>
+                    </label>
+                    <select 
+                        id="clientType" 
+                        onchange="updatePricing()" 
+                        class="w-full text-2xl font-semibold p-4 border-3 border-gray-300 rounded-xl focus:ring-4 focus:ring-cyan-500 focus:border-cyan-500 bg-white cursor-pointer"
+                    >
+                        <option value="private" class="lang-fi">Yksityinen Asiakas</option>
+                        <option value="private" class="lang-en">Private Client</option>
+                        <option value="palveluseteli" class="lang-fi">Palveluseteli Asiakas</option>
+                        <option value="palveluseteli" class="lang-en">Service Voucher Client</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pricing Info -->
+            <div class="text-center mb-10 text-lg text-gray-700 translatable">
+                <p class="font-semibold lang-fi">Vähimmäisvaraus: 2 tuntia</p>
+                <p class="font-semibold lang-en">Minimum booking: 2 hours</p>
+                <p class="lang-fi">Kaikki tarvikkeet ja välineet sisältyvät hintaan</p>
+                <p class="lang-en">All supplies and equipment included in price</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=400&fit=crop" alt="Kertasiivous / One-time Cleaning" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                            <!-- Private Client: One-time Cleaning -->
+                            <span class="service-name service-private" data-private-name-fi="Kertasiivous" data-private-name-en="One-time Cleaning">
+                                <span class="lang-fi">Kertasiivous</span>
+                                <span class="lang-en">One-time Cleaning</span>
+                            </span>
+                            <!-- Service Voucher Client: Cleaning -->
+                            <span class="service-name service-palveluseteli hidden" data-palveluseteli-name-fi="Siivous" data-palveluseteli-name-en="Cleaning">
+                                <span class="lang-fi">Siivous</span>
+                                <span class="lang-en">Cleaning</span>
+                            </span>
+                        </h3>
+                        
+                        <p class="text-3xl font-bold text-cyan-600 mb-4">
+                            <!-- Private Client Price: 50€/h + VAT -->
+                            <span class="service-price service-private">
+                                <span class="lang-fi">50€/t + alv</span>
+                                <span class="lang-en">50€/h + VAT</span>
+                            </span>
+                            <!-- Service Voucher Client Price: 28€/h -->
+                            <span class="service-price service-palveluseteli hidden">
+                                <span class="lang-fi">28€/t</span>
+                                <span class="lang-en">28€/h</span>
+                            </span>
+                        </p>
+                        
+                        <div class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            <!-- Private Client Description -->
+                            <div class="service-desc service-private">
+                                <p class="lang-fi">Täydellinen satunnaiseen perussiivouseen, erityistilaisuuksiin tai kun tarvitset perusteellisen kertaluonteisen palvelun. Ammattitaitoinen tiimimme hoitaa kaikki siivoustarpeet huolellisesti ja tarkasti.</p>
+                                <p class="lang-en">Perfect for occasional basic cleaning, special occasions, or when you need a thorough one-time service. Our professional team handles all cleaning needs carefully and precisely.</p>
+                            </div>
+                            <!-- Service Voucher Client Description -->
+                            <div class="service-desc service-palveluseteli hidden">
+                                <p class="lang-fi">Ammattitaitoinen siivouspalvelu kotiin. Huolehdimme kodin siisteydestä ja puhtaudesta ikäihmisten tarpeita kunnioittaen.</p>
+                                <p class="lang-en">Professional cleaning service for your home. We ensure the cleanliness and tidiness of your home, respecting the needs of elderly clients.</p>
+                            </div>
+                        </div>
+                        
+                        <a href="mailto:palvelut.mamasafi@gmail.com?subject=Tarjouspyyntö palvelulle" class="bg-cyan-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-cyan-600 transition inline-block w-full text-center translatable">
+                            <span class="lang-fi">Pyydä Tarjous</span>
+                            <span class="lang-en">Request Quote</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=600&h=400&fit=crop" alt="Ylläpitosiivous / Maintenance Cleaning" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                            <!-- Private Client: Maintenance Cleaning -->
+                            <span class="service-name service-private" data-private-name-fi="Ylläpitosiivous" data-private-name-en="Maintenance Cleaning">
+                                <span class="lang-fi">Ylläpitosiivous</span>
+                                <span class="lang-en">Maintenance Cleaning</span>
+                            </span>
+                            <!-- Service Voucher Client: Home Care -->
+                            <span class="service-name service-palveluseteli hidden" data-palveluseteli-name-fi="Kotihoito" data-palveluseteli-name-en="Home Care">
+                                <span class="lang-fi">Kotihoito</span>
+                                <span class="lang-en">Home Care</span>
+                            </span>
+                        </h3>
+                        
+                        <p class="text-3xl font-bold text-cyan-600 mb-4">
+                            <!-- Private Client Price: 46.50€/h + VAT -->
+                            <span class="service-price service-private">
+                                <span class="lang-fi">46.50€/t + alv</span>
+                                <span class="lang-en">46.50€/h + VAT</span>
+                            </span>
+                            <!-- Service Voucher Client Price: 28€/h -->
+                            <span class="service-price service-palveluseteli hidden">
+                                <span class="lang-fi">28€/t</span>
+                                <span class="lang-en">28€/h</span>
+                            </span>
+                        </p>
+                        
+                        <div class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            <!-- Private Client Description -->
+                            <div class="service-desc service-private">
+                                <p class="lang-fi">Säännöllinen ylläpitosiivous pitää kotisi raikkaana ja siistinä. Ihanteellinen viikoittaiseen, kahden viikon välein tapahtuvaan tai kuukausittaiseen toistuvapalveluun. Ylläpidämme johdonmukaista puhtaustasoa.</p>
+                                <p class="lang-en">Regular maintenance cleaning keeps your home fresh and tidy. Ideal for weekly, bi-weekly, or monthly recurring services. We maintain consistent cleanliness standards.</p>
+                            </div>
+                            <!-- Service Voucher Client Description -->
+                            <div class="service-desc service-palveluseteli hidden">
+                                <p class="lang-fi">Terveydenhuoltopalvelut kotona. Lääkityksen seuranta, vitaalien mittaus ja päivittäinen terveydenhoidon tuki ammattitaitoisesti.</p>
+                                <p class="lang-en">Healthcare services at home. Medication monitoring, vital sign measurement, and daily healthcare support provided professionally.</p>
+                            </div>
+                        </div>
+                        
+                        <a href="mailto:palvelut.mamasafi@gmail.com?subject=Tarjouspyyntö palvelulle" class="bg-cyan-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-cyan-600 transition inline-block w-full text-center translatable">
+                            <span class="lang-fi">Pyydä Tarjous</span>
+                            <span class="lang-en">Request Quote</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=600&h=400&fit=crop" alt="Muuttosiivous / Moving Cleaning" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                            <!-- Private Client: Moving Cleaning -->
+                            <span class="service-name service-private" data-private-name-fi="Muuttosiivous" data-private-name-en="Moving Cleaning">
+                                <span class="lang-fi">Muuttosiivous</span>
+                                <span class="lang-en">Moving Cleaning</span>
+                            </span>
+                            <!-- Service Voucher Client: Personal Assistance -->
+                            <span class="service-name service-palveluseteli hidden" data-palveluseteli-name-fi="Henkilökohtainen Apu" data-palveluseteli-name-en="Personal Assistance">
+                                <span class="lang-fi">Henkilökohtainen Apu</span>
+                                <span class="lang-en">Personal Assistance</span>
+                            </span>
+                        </h3>
+                        
+                        <p class="text-3xl font-bold text-cyan-600 mb-4">
+                            <!-- Private Client Price: 56€/h + VAT -->
+                            <span class="service-price service-private">
+                                <span class="lang-fi">56€/t + alv</span>
+                                <span class="lang-en">56€/h + VAT</span>
+                            </span>
+                            <!-- Service Voucher Client Price: 28€/h -->
+                            <span class="service-price service-palveluseteli hidden">
+                                <span class="lang-fi">28€/t</span>
+                                <span class="lang-en">28€/h</span>
+                            </span>
+                        </p>
+                        
+                        <div class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            <!-- Private Client Description -->
+                            <div class="service-desc service-private">
+                                <p class="lang-fi">Kattava siivous muuton jälkeen sisään- tai ulosmuutossa. Varmistamme, että uusi tai vanha kotisi säilyy puhtaana ja raikkaana seuraaville asukkaille tai itsellesi, käsitellen kaikki alueet mukaan lukien vaikeasti tavoitettavat kohdat.</p>
+                                <p class="lang-en">Comprehensive cleaning after moving in or out. We ensure your new or old home stays clean and fresh for the next residents or yourself, handling all areas including hard-to-reach spots.</p>
+                            </div>
+                            <!-- Service Voucher Client Description -->
+                            <div class="service-desc service-palveluseteli hidden">
+                                <p class="lang-fi">Päivittäisen elämän tuki: asioiden hoito, lääkärikäynnit, aterioiden valmistus ja seura. Autamme itsenäisen elämän ylläpitämisessä.</p>
+                                <p class="lang-en">Daily life support: errand running, doctor appointments, meal preparation, and companionship. We help maintain independent living.</p>
+                            </div>
+                        </div>
+                        
+                        <a href="mailto:palvelut.mamasafi@gmail.com?subject=Tarjouspyyntö palvelulle" class="bg-cyan-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-cyan-600 transition inline-block w-full text-center translatable">
+                            <span class="lang-fi">Pyydä Tarjous</span>
+                            <span class="lang-en">Request Quote</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="yhteystiedot" class="py-20 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-8 translatable">
+                <span class="lang-fi">Ota Yhteyttä</span>
+                <span class="lang-en">Contact Us</span>
+            </h2>
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <p class="text-xl text-gray-600 mb-8 translatable">
+                    <span class="lang-fi">Haluatko tietää lisää palveluistamme? Ota yhteyttä tänään maksuttomaan konsultaatioon.</span>
+                    <span class="lang-en">Want to know more about our services? Contact us today for a free consultation.</span>
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                    <a href="tel:+358449851874" class="flex items-center text-2xl font-semibold text-cyan-500 hover:text-cyan-600">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        +358 44 985 1874
+                    </a>
+                    <a href="mailto:palvelut.mamasafi@gmail.com" class="flex items-center text-2xl font-semibold text-cyan-500 hover:text-cyan-600 translatable">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="lang-fi">palvelut.mamasafi@gmail.com</span>
+                        <span class="lang-en">palvelut.mamasafi@gmail.com</span>
+                    </a>
+                </div>
+                <div class="mt-8">
+                    <a href="mailto:palvelut.mamasafi@gmail.com?subject=Palvelukysely" class="bg-cyan-500 text-white px-10 py-4 rounded-lg text-xl font-semibold hover:bg-cyan-600 transition inline-block translatable">
+                        <span class="lang-fi">Varaa Palvelumme Nyt</span>
+                        <span class="lang-en">Book Our Services Now</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+      <footer class="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+                
+                <!-- Company Info -->
+                <div>
+                    <div class="text-2xl font-bold mb-4">Mama Safi</div>
+                    <p class="text-gray-300 mb-4 translatable">
+                        <span class="lang-fi">Ammattimaiset kotihoitopalvelut.</span>
+                        <span class="lang-en">Professional home care services.</span>
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <a href="tel:+358449851874" class="text-cyan-300 hover:text-white transition" aria-label="Call us">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </a>
+                        <a href="mailto:palvelut.mamasafi@gmail.com" class="text-cyan-300 hover:text-white transition" aria-label="Email us">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-xl font-bold mb-4 translatable">
+                        <span class="lang-fi">Pikalinkit</span>
+                        <span class="lang-en">Quick Links</span>
+                    </h4>
+                    <ul class="space-y-2">
+                        <li><a href="#palvelut" class="text-gray-300 hover:text-white transition translatable">
+                            <span class="lang-fi">Palvelut</span>
+                            <span class="lang-en">Services</span>
+                        </a></li>
+                        <li><a href="#meista" class="text-gray-300 hover:text-white transition translatable">
+                            <span class="lang-fi">Meistä</span>
+                            <span class="lang-en">About Us</span>
+                        </a></li>
+                        <li><a href="#yhteystiedot" class="text-gray-300 hover:text-white transition translatable">
+                            <span class="lang-fi">Yhteystiedot</span>
+                            <span class="lang-en">Contact</span>
+                        </a></li>
+                    </ul>
+                </div>
+                
+                <!-- Important Documents - GOOGLE DRIVE LINK -->
+                <div>
+                    <h4 class="text-xl font-bold mb-4 translatable">
+                        <span class="lang-fi">Tärkeät tiedostot</span>
+                        <span class="lang-en">Important Documents</span>
+                    </h4>
+                    <ul class="space-y-2">
+                        <li>
+                            <!-- REPLACE YOUR_FILE_ID_HERE WITH YOUR ACTUAL GOOGLE DRIVE FILE ID -->
+                            <a href="https://drive.google.com/file/d/1JonXux8PCLjnRdoHWZ9AfqyQlRPC4qvg/view?usp=sharing" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="flex items-center text-cyan-300 hover:text-white transition font-medium translatable group">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                <span class="lang-fi">Omavalvontasuunnitelma (PDF)</span>
+                                <span class="lang-en">Self-Monitoring Plan (PDF)</span>
+                                <svg class="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="text-gray-300 text-sm translatable">
+                            <span class="lang-fi">Vammaispalvelulain mukainen suunnitelma</span>
+                            <span class="lang-en">Plan according to Disability Services Act</span>
+                        </li>
+                        <!-- You can add more documents here later -->
+                    </ul>
+                </div>
+                
+                <!-- Legal Info -->
+                <div>
+                    <h4 class="text-xl font-bold mb-4 translatable">
+                        <span class="lang-fi">Yritystiedot</span>
+                        <span class="lang-en">Company Information</span>
+                    </h4>
+                    <div class="text-gray-300 space-y-1 text-sm">
+                        <p><strong class="font-semibold">Y-tunnus:</strong> 3255428-6</p>
+                        <p class="translatable">
+                            <span class="lang-fi"><strong class="font-semibold">Toimialue:</strong> Helsinki</span>
+                            <span class="lang-en"><strong class="font-semibold">Service Area:</strong> Helsinki</span>
+                        </p>
+                        <p class="translatable">
+                            <span class="lang-fi"><strong class="font-semibold">Vastuuhenkilö:</strong> Millicent Kolehmainen</span>
+                            <span class="lang-en"><strong class="font-semibold">Responsible Person:</strong> Millicent Kolehmainen</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Copyright Bar -->
+            <div class="border-t border-blue-700 mt-10 pt-8 text-center">
+                <p class="text-gray-400 mb-2 translatable">
+                    <span class="lang-fi">© 2026 Mama Safi Kotipalvelut. Kaikki oikeudet pidätetään.</span>
+                    <span class="lang-en">© 2026 Mama Safi Kotipalvelut. All rights reserved.</span>
+                </p>
+                <p class="text-gray-500 text-sm translatable">
+                    <span class="lang-fi">Toiminta noudattaa Vammaispalvelulakia (675/2023), Sosiaalihuoltolakia ja EU:n GDPR-säädöksiä.</span>
+                    <span class="lang-en">Operations comply with the Disability Services Act (675/2023), Social Welfare Act, and EU GDPR regulations.</span>
+                </p>
+            </div>
+        </div>    </footer>
+
+    <script>
+        // Language management
+        let currentLanguage = 'fi';
+        
+        function setLanguage(lang) {
+            if (lang === currentLanguage) return;
+            
+            currentLanguage = lang;
+            
+            // Update body class
+            document.body.classList.remove('language-fi', 'language-en');
+            document.body.classList.add('language-' + lang);
+            
+            // Update URL without reload
+            history.pushState(null, '', '?lang=' + lang);
+            
+            // Update button styles
+            document.querySelectorAll('.language-option').forEach(btn => {
+                btn.classList.remove('bg-cyan-500', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            
+            const activeBtn = document.getElementById('lang' + lang.toUpperCase());
+            activeBtn.classList.remove('bg-gray-100', 'text-gray-700');
+            activeBtn.classList.add('bg-cyan-500', 'text-white');
+            
+            // Save preference
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Update page title
+            updatePageTitle(lang);
+            
+            // Update HTML lang attribute for accessibility
+            document.documentElement.lang = lang;
+        }
+        
+        function updatePageTitle(lang) {
+            if (lang === 'fi') {
+                document.title = 'Mama Safi - Ammattimaiset Kotipalvelut';
+            } else {
+                document.title = 'Mama Safi - Professional Home Care Services';
+            }
+        }
+        
+        function detectLanguage() {
+            // Check URL first
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLang = urlParams.get('lang');
+            
+            // Check localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            
+            // Check browser language
+            const browserLang = navigator.language.split('-')[0];
+            
+            // Priority: URL > Saved > Browser > Default (fi)
+            if (urlLang && (urlLang === 'fi' || urlLang === 'en')) {
+                return urlLang;
+            } else if (savedLang) {
+                return savedLang;
+            } else if (browserLang === 'en') {
+                return 'en';
+            } else {
+                return 'fi';
+            }
+        }
+        
+        // Mobile menu function
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+            
+            menu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        }
+        
+        // Pricing update function
+               // Pricing update function - FIXED VERSION
+        function updatePricing() {
+            const clientType = document.getElementById('clientType').value;
+            
+            // Get all service cards
+            const serviceCards = document.querySelectorAll('.grid > div');
+            
+            serviceCards.forEach(card => {
+                // Show/hide private vs palveluseteli content
+                const privateElements = card.querySelectorAll('.service-private');
+                const palveluseteliElements = card.querySelectorAll('.service-palveluseteli');
+                
+                if (clientType === 'private') {
+                    // Show private client content
+                    privateElements.forEach(el => el.classList.remove('hidden'));
+                    palveluseteliElements.forEach(el => el.classList.add('hidden'));
+                } else {
+                    // Show palveluseteli client content
+                    privateElements.forEach(el => el.classList.add('hidden'));
+                    palveluseteliElements.forEach(el => el.classList.remove('hidden'));
+                }
+            });
+            
+            // Update select dropdown options based on language
+            updateSelectOptions();
+        }
+        
+        function updateSelectOptions() {
+            const select = document.getElementById('clientType');
+            const options = select.querySelectorAll('option');
+            
+            // Hide all options first
+            options.forEach(option => {
+                option.style.display = 'none';
+            });
+            
+            // Show only options for current language
+            const currentLang = document.body.classList.contains('language-en') ? 'en' : 'fi';
+            options.forEach(option => {
+                if (option.classList.contains('lang-' + currentLang)) {
+                    option.style.display = 'block';
+                }
+            });
+            
+            // Make sure selected option is visible
+            const selectedValue = select.value;
+            const visibleOptions = Array.from(options).filter(opt => 
+                opt.style.display === 'block' && opt.value === selectedValue
+            );
+            
+            if (visibleOptions.length === 0) {
+                // If current selection isn't visible, select the first visible option
+                const firstVisible = Array.from(options).find(opt => opt.style.display === 'block');
+                if (firstVisible) {
+                    select.value = firstVisible.value;
+                }
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial language
+            const initialLang = detectLanguage();
+            setLanguage(initialLang);
+            
+            // Update select options based on initial language
+            updateSelectOptions();
+            
+            // Initialize pricing display
+            updatePricing();
+            
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', function() {
+                const lang = detectLanguage();
+                setLanguage(lang);
+                updateSelectOptions();
+                updatePricing();
+            });
+        });
+    </script>
+</body>
+</html>
